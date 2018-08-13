@@ -11,5 +11,17 @@
     <string name="btn_salir">Salida</string>
 
     <!--Fragment_solicitud-->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="view_nombre">Nombre del solicitante</string>
+    <string name="txt_nombre">Escribe aqui</string>
+    <string name="view_comentario">Escribe un comentario o una fecha</string>
+    <string name="txt_comentario">Comentario - Fecha</string>
+    <string name="view_gps">Coordenadas actuales</string>
+    <string name="btn_syn">Sincroniza coordenadas</string>
+    <string name="btn_envia_solicitud">Hacer solicitud</string>
+
+    <!--FullScreenDialog-->
+    <string name="view_fecha">Fecha:</string>
+    <string name="view_hora">Hora:</string>
+    <string name="view_nombre_dos">Nombre:</string>
+    <string name="view_gps_dos">Coordenadas:</string>
 </resources>

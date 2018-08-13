@@ -4,11 +4,17 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageButton;
 
 import com.example.multimedia.hospital.R;
+import com.example.multimedia.hospital.full_screen_dialog.FullScreenDialog;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -27,6 +33,13 @@ public class Fragment_solicitud extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+
+    //---------------------------------------------
+    private EditText txtSolicitante;
+    private EditText txtComentario;
+    private EditText txtGps;
+    private ImageButton btnSync;
+    private Button btnEnviaSolicitud;
 
     private OnFragmentInteractionListener mListener;
 
@@ -65,7 +78,28 @@ public class Fragment_solicitud extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_fragment_solicitud, container, false);
+        View vista = inflater.inflate(R.layout.fragment_fragment_solicitud, container, false);
+
+        //Creamos las referencias
+        txtSolicitante = (EditText) vista.findViewById(R.id.txt_nombre_solicitante);
+        txtComentario = (EditText) vista.findViewById(R.id.txt_comentario);
+        txtGps = (EditText) vista.findViewById(R.id.txt_gps);
+        btnSync = (ImageButton) vista.findViewById(R.id.btn_sync);
+        btnEnviaSolicitud = (Button) vista.findViewById(R.id.btn_envia_solicitud);
+
+        btnEnviaSolicitud.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //Creo una instancia de FullScreenDialog
+                FullScreenDialog objFullDialog = new FullScreenDialog();
+                FragmentManager objManajer = getFragmentManager();
+                FragmentTransaction objTransaction = objManajer.beginTransaction();
+                objTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+                objTransaction.add(android.R.id.content, objFullDialog).addToBackStack(null).commit();
+            }
+        });
+
+        return vista;
     }
 
     // TODO: Rename method, update argument and hook method into UI event

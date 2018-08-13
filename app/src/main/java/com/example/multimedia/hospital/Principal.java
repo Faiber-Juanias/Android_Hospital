@@ -24,8 +24,9 @@ public class Principal extends AppCompatActivity implements Fragment_informe.OnF
 
         //Almacenamos las instancias de los Fragments
         objFragment = new Fragment[2];
-        objFragment[0] = new Fragment_informe();
-        objFragment[1] = new Fragment_solicitud();
+        objFragment[0] = new Fragment_solicitud();
+        objFragment[1] = new Fragment_informe();
+
 
         for (int i=0; i<idBotones.length; i++){
             //Creamos las referencias
@@ -36,26 +37,24 @@ public class Principal extends AppCompatActivity implements Fragment_informe.OnF
             imageBotones[i].setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-
-                    switch (imageBotones[n].getId()){
-                        case R.id.btn_solicitud:
-                            //imageBotones[n].setBackgroundColor(getResources().getColor(R.color.colorPrimary));
-                            imageBotones[n].setBackground(getResources().getDrawable(R.drawable.boton_blue, null));
-                            imageBotones[1].setBackgroundColor(0);
-                            break;
-                        case R.id.btn_informe:
-                            //imageBotones[n].setBackgroundColor(getResources().getColor(R.color.colorPrimary));
-                            imageBotones[n].setBackground(getResources().getDrawable(R.drawable.boton_blue, null));
-                            imageBotones[0].setBackgroundColor(0);
-                            break;
-                    }
-
-                    if (n == 2){
-                        finish();
-                    }else{
-                        //Mostramos el Fragment correspondiente
-                        getSupportFragmentManager().beginTransaction().replace(R.id.content_fragment, objFragment[n]).addToBackStack(null).commit();
-                    }
+                switch (imageBotones[n].getId()){
+                    case R.id.btn_solicitud:
+                        //imageBotones[n].setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+                        imageBotones[n].setBackground(getResources().getDrawable(R.drawable.boton_blue, null));
+                        imageBotones[1].setBackgroundColor(0);
+                        break;
+                    case R.id.btn_informe:
+                        //imageBotones[n].setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+                        imageBotones[n].setBackground(getResources().getDrawable(R.drawable.boton_blue, null));
+                        imageBotones[0].setBackgroundColor(0);
+                        break;
+                }
+                if (n == 2){
+                    finish();
+                }else{
+                    //Mostramos el Fragment correspondiente
+                    getSupportFragmentManager().beginTransaction().replace(R.id.content_fragment, objFragment[n]).addToBackStack(null).commit();
+                }
                 }
             });
         }

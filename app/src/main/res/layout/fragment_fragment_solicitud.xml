@@ -4,10 +4,77 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:padding="10dp"
     tools:context=".fragments.Fragment_solicitud">
 
     <TextView
+        android:id="@+id/view_nombre"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:text="@string/view_nombre"
+        android:textStyle="bold"/>
+
+    <EditText
+        android:id="@+id/txt_nombre_solicitante"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="text"
+        android:hint="@string/txt_nombre"/>
+
+    <TextView
+        android:id="@+id/view_comentario"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/view_comentario"
+        android:textStyle="bold"/>
+
+    <EditText
+        android:id="@+id/txt_comentario"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:gravity="top"
+        android:hint="@string/txt_comentario"
+        android:inputType="textMultiLine" />
+
+    <TextView
+        android:id="@+id/view_gps"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/view_gps"
+        android:textStyle="bold"/>
+
+    <EditText
+        android:id="@+id/txt_gps"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="text"
+        android:hint="@string/view_gps"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center">
+
+        <ImageButton
+            android:id="@+id/btn_sync"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:src="@drawable/sync"
+            android:background="@color/colorTransparente"
+            android:contentDescription="@string/btn_syn"/>
+
+        <Button
+            android:id="@+id/btn_envia_solicitud"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
+            android:text="@string/btn_envia_solicitud"
+            android:textStyle="bold"
+            android:textAllCaps="false"
+            android:textSize="17sp"/>
+
+    </LinearLayout>
 
 </LinearLayout>
