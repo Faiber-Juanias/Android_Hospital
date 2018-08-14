@@ -1,8 +1,16 @@
 package com.example.multimedia.hospital.fragments;
 
+import android.Manifest;
+import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Context;
+import android.content.pm.PackageManager;
+import android.location.Location;
+import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -12,6 +20,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
 import com.example.multimedia.hospital.R;
 import com.example.multimedia.hospital.full_screen_dialog.FullScreenDialog;
@@ -40,6 +49,9 @@ public class Fragment_solicitud extends Fragment {
     private EditText txtGps;
     private ImageButton btnSync;
     private Button btnEnviaSolicitud;
+
+    private Context context;
+
 
     private OnFragmentInteractionListener mListener;
 
@@ -75,7 +87,7 @@ public class Fragment_solicitud extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View vista = inflater.inflate(R.layout.fragment_fragment_solicitud, container, false);
@@ -87,12 +99,38 @@ public class Fragment_solicitud extends Fragment {
         btnSync = (ImageButton) vista.findViewById(R.id.btn_sync);
         btnEnviaSolicitud = (Button) vista.findViewById(R.id.btn_envia_solicitud);
 
+        btnSync.setOnClickListener(new View.OnClickListener() {
+            @SuppressLint("SetTextI18n")
+            @Override
+            public void onClick(View view) {
+                //Almaceno en un objeto de tipo LocationManager al cual asignamos los servicios del sistema
+                LocationManager locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
+                //Validamos los permisos necesarios
+                if (ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                    return;
+                }else{
+                    try{
+                        assert locationManager != null;
+                        Location location = new Location(locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER));
+                        String latitud = String.valueOf(location.getLatitude());
+                        String longitud = String.valueOf(location.getLongitude());
+                        txtGps.setText(latitud + " - " + longitud);
+                        Toast.makeText(context, "Latitud - Longitud mostrados.", Toast.LENGTH_SHORT).show();
+                    }catch (NullPointerException e){
+                        e.getMessage();
+                        e.getStackTrace();
+                    }
+                }
+            }
+        });
+
         btnEnviaSolicitud.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 //Creo una instancia de FullScreenDialog
                 FullScreenDialog objFullDialog = new FullScreenDialog();
                 FragmentManager objManajer = getFragmentManager();
+                assert objManajer != null;
                 FragmentTransaction objTransaction = objManajer.beginTransaction();
                 objTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
                 objTransaction.add(android.R.id.content, objFullDialog).addToBackStack(null).commit();
@@ -112,6 +150,11 @@ public class Fragment_solicitud extends Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
+
+        if (context instanceof Activity){
+            this.context = context;
+        }
+
         if (context instanceof OnFragmentInteractionListener) {
             mListener = (OnFragmentInteractionListener) context;
         } else {
