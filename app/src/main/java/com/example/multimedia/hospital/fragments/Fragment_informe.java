@@ -5,13 +5,14 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import com.example.multimedia.hospital.Adaptadores.AdapterList;
+import com.example.multimedia.hospital.Adaptadores.AdaptadorLista;
 import com.example.multimedia.hospital.Adaptadores.Datos;
 import com.example.multimedia.hospital.R;
 
@@ -83,13 +84,8 @@ public class Fragment_informe extends Fragment {
 
         //Creo las referencias necesarias
         recyclerView = (RecyclerView) vista.findViewById(R.id.recycler_lista);
+        recyclerView.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false));
 
-        llenaRecycler();
-
-        return vista;
-    }
-
-    public void llenaRecycler(){
         try{
             arrayList = new ArrayList<>();
             //Obtenemos un array con los archivos internos del dispositivo
@@ -112,21 +108,28 @@ public class Fragment_informe extends Fragment {
                 String comentario = objBuffered.readLine();
                 String coordenada = objBuffered.readLine();
 
+                //Validamos si coordenadas es null
+                if(coordenada == null){
+                    coordenada = "0";
+                }
+
                 //Insertamos los datos dentro de una instancia del arrayList
                 arrayList.add(new Datos(fechaHora, nombre, comentario, coordenada));
             }
             //valido que el arrayList no este vacio
             if (arrayList.size() != 0){
-                //Creo una instancia de AdapterList
-                AdapterList objAdapter = new AdapterList(context, arrayList);
+                //Creo una instancia de AdaptadorLista
+                AdaptadorLista objAdapter = new AdaptadorLista(context, arrayList);
                 //Asigno el adaptador al reclycler
                 recyclerView.setAdapter(objAdapter);
             }else {
                 Toast.makeText(context, "No hay nada para mostrar.", Toast.LENGTH_SHORT).show();
             }
         }catch (Exception e){
-            e.getStackTrace();
+            Toast.makeText(context, "ERROR: " + e.getMessage(), Toast.LENGTH_SHORT).show();
         }
+
+        return vista;
     }
 
     // TODO: Rename method, update argument and hook method into UI event

@@ -1,7 +1,8 @@
 package com.example.multimedia.hospital;
 
-import android.content.res.Resources;
+import android.annotation.TargetApi;
 import android.net.Uri;
+import android.os.Build;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -35,6 +36,7 @@ public class Principal extends AppCompatActivity implements Fragment_informe.OnF
             final int n = i;
             //Creamos el evento
             imageBotones[i].setOnClickListener(new View.OnClickListener() {
+                @TargetApi(Build.VERSION_CODES.LOLLIPOP)
                 @Override
                 public void onClick(View view) {
                 switch (imageBotones[n].getId()){

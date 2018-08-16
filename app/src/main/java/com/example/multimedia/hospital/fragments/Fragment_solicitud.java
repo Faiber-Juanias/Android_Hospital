@@ -6,6 +6,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.location.Location;
+import android.location.LocationListener;
 import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
@@ -51,6 +52,8 @@ public class Fragment_solicitud extends Fragment {
     private Button btnEnviaSolicitud;
 
     private Context context;
+    LocationManager locationManager;
+    Location location;
 
 
     private OnFragmentInteractionListener mListener;
@@ -99,28 +102,13 @@ public class Fragment_solicitud extends Fragment {
         btnSync = (ImageButton) vista.findViewById(R.id.btn_sync);
         btnEnviaSolicitud = (Button) vista.findViewById(R.id.btn_envia_solicitud);
 
+        //Almaceno en un objeto de tipo LocationManager al cual asignamos los servicios del sistema
+        locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
+
         btnSync.setOnClickListener(new View.OnClickListener() {
-            @SuppressLint("SetTextI18n")
             @Override
             public void onClick(View view) {
-                //Almaceno en un objeto de tipo LocationManager al cual asignamos los servicios del sistema
-                LocationManager locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
-                //Validamos los permisos necesarios
-                if (ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                    return;
-                }else{
-                    try{
-                        assert locationManager != null;
-                        Location location = new Location(locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER));
-                        String latitud = String.valueOf(location.getLatitude());
-                        String longitud = String.valueOf(location.getLongitude());
-                        txtGps.setText(latitud + " - " + longitud);
-                        Toast.makeText(context, "Latitud - Longitud mostrados.", Toast.LENGTH_SHORT).show();
-                    }catch (NullPointerException e){
-                        e.getMessage();
-                        e.getStackTrace();
-                    }
-                }
+                traeGps();
             }
         });
 
@@ -148,6 +136,25 @@ public class Fragment_solicitud extends Fragment {
         });
 
         return vista;
+    }
+
+    @SuppressLint("SetTextI18n")
+    public void traeGps(){
+        try{
+            //Validamos los permisos necesarios
+            if (ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+                return;
+            }else{
+                assert locationManager != null;
+                Location location = new Location(locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER));
+                String latitud = String.valueOf(location.getLatitude());
+                String longitud = String.valueOf(location.getLongitude());
+                txtGps.setText(latitud + " - " + longitud);
+                Toast.makeText(context, "Latitud - Longitud mostrados.", Toast.LENGTH_SHORT).show();
+            }
+        }catch (NullPointerException | SecurityException | AssertionError e){
+            e.getMessage();
+        }
     }
 
     // TODO: Rename method, update argument and hook method into UI event
