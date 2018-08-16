@@ -5,4 +5,5 @@
     <color name="colorAccent">#FF4081</color>
     <color name="colorViewPrincipal">#ffffff</color>
     <color name="colorTransparente">#00ffffff</color>
+    <color name="colorLinearLayout">#d2d2d2</color>
 </resources>

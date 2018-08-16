@@ -20,8 +20,15 @@
     <string name="btn_envia_solicitud">Hacer solicitud</string>
 
     <!--FullScreenDialog-->
+    <string name="view_screen_title">Envio de datos</string>
     <string name="view_fecha">Fecha:</string>
-    <string name="view_hora">Hora:</string>
     <string name="view_nombre_dos">Nombre:</string>
     <string name="view_gps_dos">Coordenadas:</string>
+    <string name="btn_envia_solicitud_dos">Confirmar solicitud</string>
+
+    <!--item_list-->
+    <string name="view_fecha_lista">Fecha</string>
+    <string name="view_nombre_lista">Nombre</string>
+    <string name="view_comentario_lista">Comentario</string>
+    <string name="view_gps_lista">Coordenada</string>
 </resources>

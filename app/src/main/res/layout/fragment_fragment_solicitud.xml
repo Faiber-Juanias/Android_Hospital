@@ -8,7 +8,6 @@
     tools:context=".fragments.Fragment_solicitud">
 
     <TextView
-        android:id="@+id/view_nombre"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/view_nombre"
@@ -22,7 +21,6 @@
         android:hint="@string/txt_nombre"/>
 
     <TextView
-        android:id="@+id/view_comentario"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/view_comentario"
@@ -37,7 +35,6 @@
         android:inputType="textMultiLine" />
 
     <TextView
-        android:id="@+id/view_gps"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/view_gps"

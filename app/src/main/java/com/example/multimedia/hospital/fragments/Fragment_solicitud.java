@@ -130,6 +130,16 @@ public class Fragment_solicitud extends Fragment {
                 //Creo una instancia de FullScreenDialog
                 FullScreenDialog objFullDialog = new FullScreenDialog();
                 FragmentManager objManajer = getFragmentManager();
+
+                //Creamos un Bundle para enviar los datos al FullScreenDialog
+                Bundle bundle = new Bundle();
+                bundle.putString("solicitante", txtSolicitante.getText().toString());
+                bundle.putString("comentario", txtComentario.getText().toString());
+                bundle.putString("coordenada", txtGps.getText().toString());
+
+                //Enviamos el bundle al Dialogo
+                objFullDialog.setArguments(bundle);
+
                 assert objManajer != null;
                 FragmentTransaction objTransaction = objManajer.beginTransaction();
                 objTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);

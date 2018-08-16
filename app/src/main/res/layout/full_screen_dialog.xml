@@ -9,45 +9,114 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="horizontal">
+        android:orientation="vertical">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:layout_weight="1">
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="10dp"
+            android:orientation="vertical">
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="5dp"
-                android:gravity="end"
-                android:text="@string/view_fecha"
-                android:textStyle="bold"/>
+                android:text="@string/view_screen_title"
+                android:textStyle="bold"
+                android:textSize="30sp"
+                android:gravity="center"/>
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="5dp"
-                android:gravity="end"
-                android:text="@string/view_hora"
-                android:textStyle="bold"/>
+        </LinearLayout>
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="5dp"
-                android:gravity="end"
-                android:text="@string/view_nombre_dos"
-                android:textStyle="bold"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="60dp"
+            android:paddingBottom="60dp"
+            android:orientation="horizontal">
 
-            <TextView
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="5dp"
-                android:gravity="end"
-                android:text="@string/view_gps_dos"
-                android:textStyle="bold"/>
+                android:layout_height="match_parent"
+                android:paddingTop="20dp"
+                android:paddingBottom="20dp"
+                android:orientation="vertical"
+                android:background="@color/colorLinearLayout"
+                android:layout_weight="1">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="5dp"
+                    android:layout_marginBottom="10dp"
+                    android:gravity="end"
+                    android:text="@string/view_fecha"
+                    android:textStyle="bold"
+                    android:textSize="20sp"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="5dp"
+                    android:layout_marginBottom="10dp"
+                    android:gravity="end"
+                    android:text="@string/view_nombre_dos"
+                    android:textStyle="bold"
+                    android:textSize="20sp"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="5dp"
+                    android:gravity="end"
+                    android:text="@string/view_gps_dos"
+                    android:textStyle="bold"
+                    android:textSize="20sp"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingTop="20dp"
+                android:paddingBottom="20dp"
+                android:orientation="vertical"
+                android:background="@color/colorLinearLayout"
+                android:layout_weight="1">
+
+                <TextView
+                    android:id="@+id/view_fecha"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginEnd="3dp"
+                    android:layout_marginBottom="15dp"
+                    android:gravity="start"
+                    android:text="@string/view_fecha"
+                    android:textSize="17sp"/>
+
+                <TextView
+                    android:id="@+id/view_nombre"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginEnd="3dp"
+                    android:layout_marginBottom="15dp"
+                    android:gravity="start"
+                    android:text="@string/view_nombre_dos"
+                    android:textSize="17sp"/>
+
+                <TextView
+                    android:id="@+id/view_gps"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="3dp"
+                    android:layout_marginStart="5dp"
+                    android:gravity="start"
+                    android:text="@string/view_gps_dos"
+                    android:textSize="17sp"/>
+
+            </LinearLayout>
 
         </LinearLayout>
 
@@ -55,39 +124,16 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
-            android:layout_weight="1">
+            android:gravity="center">
 
-            <TextView
-                android:id="@+id/view_fecha"
-                android:layout_width="match_parent"
+            <Button
+                android:id="@+id/btn_envia_solicitud_dos"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="5dp"
-                android:gravity="start"
-                android:text="@string/view_fecha"/>
-
-            <TextView
-                android:id="@+id/view_hora"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="5dp"
-                android:gravity="start"
-                android:text="@string/view_hora"/>
-
-            <TextView
-                android:id="@+id/view_comentario_dos"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="5dp"
-                android:gravity="start"
-                android:text="@string/view_nombre_dos"/>
-
-            <TextView
-                android:id="@+id/view_gps_dos"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="5dp"
-                android:gravity="start"
-                android:text="@string/view_gps_dos"/>
+                android:text="@string/btn_envia_solicitud_dos"
+                android:textStyle="bold"
+                android:textAllCaps="false"
+                android:textSize="17sp"/>
 
         </LinearLayout>
 
