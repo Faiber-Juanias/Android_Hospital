@@ -1,14 +1,23 @@
 package com.example.multimedia.hospital.fragments;
 
+import android.app.Activity;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
+import com.example.multimedia.hospital.Adaptadores.AdapterList;
+import com.example.multimedia.hospital.Adaptadores.Datos;
 import com.example.multimedia.hospital.R;
+
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -27,6 +36,11 @@ public class Fragment_informe extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+
+    //-----------------------------------------
+    RecyclerView recyclerView;
+    ArrayList<Datos> arrayList;
+    Context context;
 
     private OnFragmentInteractionListener mListener;
 
@@ -65,7 +79,54 @@ public class Fragment_informe extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_fragment_informe, container, false);
+        View vista = inflater.inflate(R.layout.fragment_fragment_informe, container, false);
+
+        //Creo las referencias necesarias
+        recyclerView = (RecyclerView) vista.findViewById(R.id.recycler_lista);
+
+        llenaRecycler();
+
+        return vista;
+    }
+
+    public void llenaRecycler(){
+        try{
+            arrayList = new ArrayList<>();
+            //Obtenemos un array con los archivos internos del dispositivo
+            String[] archivo = context.fileList();
+            //Recorremos el array
+            for (int i = 0; i < archivo.length; i++) {
+                if (archivo[i].equalsIgnoreCase("instant-run")) {
+                    continue;
+                }
+
+                //Abrimos el archivo a leer
+                InputStreamReader objAbreArchivo = new InputStreamReader(context.openFileInput(archivo[i]));
+                //Leemos el archivo
+                BufferedReader objBuffered = new BufferedReader(objAbreArchivo);
+
+                //Guardamos todos los datos del archivo
+                String entrada = objBuffered.readLine();
+                String fechaHora = objBuffered.readLine();
+                String nombre = objBuffered.readLine();
+                String comentario = objBuffered.readLine();
+                String coordenada = objBuffered.readLine();
+
+                //Insertamos los datos dentro de una instancia del arrayList
+                arrayList.add(new Datos(fechaHora, nombre, comentario, coordenada));
+            }
+            //valido que el arrayList no este vacio
+            if (arrayList.size() != 0){
+                //Creo una instancia de AdapterList
+                AdapterList objAdapter = new AdapterList(context, arrayList);
+                //Asigno el adaptador al reclycler
+                recyclerView.setAdapter(objAdapter);
+            }else {
+                Toast.makeText(context, "No hay nada para mostrar.", Toast.LENGTH_SHORT).show();
+            }
+        }catch (Exception e){
+            e.getStackTrace();
+        }
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -78,6 +139,11 @@ public class Fragment_informe extends Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
+
+        if (context instanceof Activity){
+            this.context = context;
+        }
+
         if (context instanceof OnFragmentInteractionListener) {
             mListener = (OnFragmentInteractionListener) context;
         } else {

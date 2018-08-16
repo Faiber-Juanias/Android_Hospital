@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.multimedia.hospital.R;
 
@@ -35,7 +36,7 @@ public class FullScreenDialog extends DialogFragment{
     private String fechaHora="0";
     private String nombre="0";
     private String comentario="0";
-    private String coordeanada="0";
+    private String coordenada="0";
 
     Context context;
 
@@ -56,11 +57,11 @@ public class FullScreenDialog extends DialogFragment{
             fechaHora = getFechaHora();
             nombre = getArguments().getString("solicitante");
             comentario = getArguments().getString("comentario");
-            coordeanada = getArguments().getString("coordenada");
+            coordenada = getArguments().getString("coordenada");
 
             viewFecha.setText(fechaHora);
             viewNombre.setText(nombre);
-            viewCoordenada.setText(coordeanada);
+            viewCoordenada.setText(coordenada);
 
             btnEnvia.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -152,11 +153,12 @@ public class FullScreenDialog extends DialogFragment{
             //Escribimos los comentarios del solicitante
             objCreaArchivo.write("" + comentario + "\n");
             //Escribimos las coordenadas del solicitante
-            objCreaArchivo.write("" + coordeanada);
+            objCreaArchivo.write("" + coordenada);
             //Limpiamos el archivo
             objCreaArchivo.flush();
             //Cerramos el archivo
             objCreaArchivo.close();
+            Toast.makeText(context, "Solicitud hecha.", Toast.LENGTH_SHORT).show();
         }catch (Exception e){
             e.getStackTrace();
         }

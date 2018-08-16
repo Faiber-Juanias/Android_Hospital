@@ -4,13 +4,13 @@ public class Datos {
     private String fechaHora;
     private String nombre;
     private String comentario;
-    private String coordanada;
+    private String coordenada;
 
-    public Datos(String fechaHora, String nombre, String comentario, String coordanada) {
+    public Datos(String fechaHora, String nombre, String comentario, String coordenada) {
         this.fechaHora = fechaHora;
         this.nombre = nombre;
         this.comentario = comentario;
-        this.coordanada = coordanada;
+        this.coordenada = coordenada;
     }
 
     public String getFechaHora() {
@@ -25,7 +25,7 @@ public class Datos {
         return comentario;
     }
 
-    public String getCoordanada() {
-        return coordanada;
+    public String getcoordenada() {
+        return coordenada;
     }
 }
