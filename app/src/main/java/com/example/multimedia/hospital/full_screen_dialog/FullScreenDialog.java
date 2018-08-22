@@ -17,6 +17,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.multimedia.hospital.R;
+import com.example.multimedia.hospital.fragments.Fragment_solicitud;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -67,6 +68,8 @@ public class FullScreenDialog extends DialogFragment{
                 @Override
                 public void onClick(View view) {
                     creaArchivoSolicitud();
+
+                    dismiss();
                 }
             });
         }

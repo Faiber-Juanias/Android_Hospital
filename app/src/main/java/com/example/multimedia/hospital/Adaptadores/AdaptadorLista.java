@@ -12,10 +12,11 @@ import com.example.multimedia.hospital.R;
 
 import java.util.ArrayList;
 
-public class AdaptadorLista extends RecyclerView.Adapter<AdaptadorLista.AdaptadorHolder> {
+public class AdaptadorLista extends RecyclerView.Adapter<AdaptadorLista.AdaptadorHolder> implements View.OnClickListener{
 
     private Context context;
     private ArrayList<Datos> arrayList;
+    private View.OnClickListener listener;
 
     public AdaptadorLista(Context context, ArrayList<Datos> arrayList) {
         this.context = context;
@@ -26,6 +27,7 @@ public class AdaptadorLista extends RecyclerView.Adapter<AdaptadorLista.Adaptado
     @Override
     public AdaptadorLista.AdaptadorHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         View vista = LayoutInflater.from(context).inflate(R.layout.item_list, viewGroup, false);
+        vista.setOnClickListener(this);
         return new AdaptadorHolder(vista);
     }
 
@@ -40,6 +42,17 @@ public class AdaptadorLista extends RecyclerView.Adapter<AdaptadorLista.Adaptado
     @Override
     public int getItemCount() {
         return arrayList.size();
+    }
+
+    public void setOnClickListener(View.OnClickListener listener){
+        this.listener = listener;
+    }
+
+    @Override
+    public void onClick(View view) {
+        if (view != null){
+            listener.onClick(view);
+        }
     }
 
     public class AdaptadorHolder extends RecyclerView.ViewHolder {

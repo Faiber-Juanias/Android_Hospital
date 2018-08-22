@@ -1,7 +1,9 @@
 package com.example.multimedia.hospital.fragments;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -17,7 +19,9 @@ import com.example.multimedia.hospital.Adaptadores.Datos;
 import com.example.multimedia.hospital.R;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 
 /**
@@ -86,6 +90,57 @@ public class Fragment_informe extends Fragment {
         recyclerView = (RecyclerView) vista.findViewById(R.id.recycler_lista);
         recyclerView.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false));
 
+        llenaRecycler();
+
+        return vista;
+    }
+
+    public void llenaRecycler(){
+        try{
+            llenaListaDatos();
+            //valido que el arrayList no este vacio
+            if (arrayList.size() != 0){
+                //Creo una instancia de AdaptadorLista
+                AdaptadorLista objAdapter = new AdaptadorLista(context, arrayList);
+                //Creo el escuchador de eventos
+                objAdapter.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(final View view) {
+                        final AlertDialog.Builder builder = new AlertDialog.Builder(context)
+                                .setTitle("Advertencia")
+                                .setCancelable(false)
+                                .setMessage("¿Esta seguro de querer eliminar esta solicitud?\nEsta accion no es revertible.")
+                                .setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialogInterface, int i) {
+                                        dialogInterface.dismiss();
+                                    }
+                                })
+                                .setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialogInterface, int i) {
+                                        String nombre = arrayList.get(recyclerView.getChildAdapterPosition(view)).getEntrada();
+                                        context.deleteFile(nombre);
+                                        llenaRecycler();
+                                        Toast.makeText(context, "Solicitud eliminada.", Toast.LENGTH_SHORT).show();
+                                        dialogInterface.dismiss();
+                                    }
+                                });
+                        AlertDialog alertDialog = builder.create();
+                        alertDialog.show();
+                    }
+                });
+                //Asigno el adaptador al reclycler
+                recyclerView.setAdapter(objAdapter);
+            }else {
+                Toast.makeText(context, "No hay nada para mostrar.", Toast.LENGTH_SHORT).show();
+            }
+        }catch (Exception e){
+            Toast.makeText(context, "ERROR: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    public void llenaListaDatos(){
         try{
             arrayList = new ArrayList<>();
             //Obtenemos un array con los archivos internos del dispositivo
@@ -114,22 +169,11 @@ public class Fragment_informe extends Fragment {
                 }
 
                 //Insertamos los datos dentro de una instancia del arrayList
-                arrayList.add(new Datos(fechaHora, nombre, comentario, coordenada));
+                arrayList.add(new Datos(entrada, fechaHora, nombre, comentario, coordenada));
             }
-            //valido que el arrayList no este vacio
-            if (arrayList.size() != 0){
-                //Creo una instancia de AdaptadorLista
-                AdaptadorLista objAdapter = new AdaptadorLista(context, arrayList);
-                //Asigno el adaptador al reclycler
-                recyclerView.setAdapter(objAdapter);
-            }else {
-                Toast.makeText(context, "No hay nada para mostrar.", Toast.LENGTH_SHORT).show();
-            }
-        }catch (Exception e){
-            Toast.makeText(context, "ERROR: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+        }catch (IOException e){
+            e.getStackTrace();
         }
-
-        return vista;
     }
 
     // TODO: Rename method, update argument and hook method into UI event

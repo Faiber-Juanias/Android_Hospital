@@ -4,17 +4,20 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,6 +26,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
+import com.example.multimedia.hospital.LocalizacionGps;
 import com.example.multimedia.hospital.R;
 import com.example.multimedia.hospital.full_screen_dialog.FullScreenDialog;
 
@@ -47,13 +51,11 @@ public class Fragment_solicitud extends Fragment {
     //---------------------------------------------
     private EditText txtSolicitante;
     private EditText txtComentario;
-    private EditText txtGps;
+    public EditText txtGps;
     private ImageButton btnSync;
     private Button btnEnviaSolicitud;
 
     private Context context;
-    LocationManager locationManager;
-    Location location;
 
 
     private OnFragmentInteractionListener mListener;
@@ -102,8 +104,7 @@ public class Fragment_solicitud extends Fragment {
         btnSync = (ImageButton) vista.findViewById(R.id.btn_sync);
         btnEnviaSolicitud = (Button) vista.findViewById(R.id.btn_envia_solicitud);
 
-        //Almaceno en un objeto de tipo LocationManager al cual asignamos los servicios del sistema
-        locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
+        txtGps.setEnabled(false);
 
         btnSync.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -115,23 +116,36 @@ public class Fragment_solicitud extends Fragment {
         btnEnviaSolicitud.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //Creo una instancia de FullScreenDialog
-                FullScreenDialog objFullDialog = new FullScreenDialog();
-                FragmentManager objManajer = getFragmentManager();
+                //Obtengo el valor de los campos
+                String solicitante = txtSolicitante.getText().toString();
+                String coordenadas = txtGps.getText().toString();
+                //Valido si los campos estan vacios
+                if (!solicitante.isEmpty() && !coordenadas.isEmpty()) {
+                    //Creo una instancia de FullScreenDialog
+                    FullScreenDialog objFullDialog = new FullScreenDialog();
+                    FragmentManager objManajer = getFragmentManager();
 
-                //Creamos un Bundle para enviar los datos al FullScreenDialog
-                Bundle bundle = new Bundle();
-                bundle.putString("solicitante", txtSolicitante.getText().toString());
-                bundle.putString("comentario", txtComentario.getText().toString());
-                bundle.putString("coordenada", txtGps.getText().toString());
+                    //Creamos un Bundle para enviar los datos al FullScreenDialog
+                    Bundle bundle = new Bundle();
+                    bundle.putString("solicitante", txtSolicitante.getText().toString());
+                    bundle.putString("comentario", txtComentario.getText().toString());
+                    bundle.putString("coordenada", txtGps.getText().toString());
 
-                //Enviamos el bundle al Dialogo
-                objFullDialog.setArguments(bundle);
+                    //Enviamos el bundle al Dialogo
+                    objFullDialog.setArguments(bundle);
 
-                assert objManajer != null;
-                FragmentTransaction objTransaction = objManajer.beginTransaction();
-                objTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-                objTransaction.add(android.R.id.content, objFullDialog).addToBackStack(null).commit();
+                    //Dejamos en blanco los campos
+                    txtSolicitante.setText("");
+                    txtComentario.setText("");
+                    txtGps.setText("");
+
+                    assert objManajer != null;
+                    FragmentTransaction objTransaction = objManajer.beginTransaction();
+                    objTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+                    objTransaction.add(android.R.id.content, objFullDialog).addToBackStack(null).commit();
+                }else{
+                    Toast.makeText(context, "El campo Nombre y Coordenada son obligatorios.", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
@@ -141,17 +155,25 @@ public class Fragment_solicitud extends Fragment {
     @SuppressLint("SetTextI18n")
     public void traeGps(){
         try{
-            //Validamos los permisos necesarios
-            if (ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            //Valido los permisos
+            if (ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED){
                 return;
-            }else{
-                assert locationManager != null;
-                Location location = new Location(locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER));
-                String latitud = String.valueOf(location.getLatitude());
-                String longitud = String.valueOf(location.getLongitude());
-                txtGps.setText(latitud + " - " + longitud);
-                Toast.makeText(context, "Latitud - Longitud mostrados.", Toast.LENGTH_SHORT).show();
             }
+            //Obtengo los servicios de ubicacion
+            LocationManager locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
+            //Creo la instancia de la clase Localizacion
+            LocalizacionGps localizacionGps = new LocalizacionGps();
+            localizacionGps.setFragment_solicitud(Fragment_solicitud.this);
+            //Almacenamos el valor del estado del GPS
+            boolean gpsEnable = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
+            //Validamos si el GPS esta activado
+            if (!gpsEnable){
+                Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                startActivity(intent);
+            }
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,0,0,(LocationListener) localizacionGps);
+            locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER,0,0,(LocationListener) localizacionGps);
+            Toast.makeText(context, "....", Toast.LENGTH_SHORT).show();
         }catch (NullPointerException | SecurityException | AssertionError e){
             e.getMessage();
         }
